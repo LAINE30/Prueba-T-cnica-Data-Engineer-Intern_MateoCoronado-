@@ -213,3 +213,7 @@ venv/
 __pycache__/
 .ipynb_checkpoints
 .env
+
+## notebooks
+simple-eda-sales-and-customer-patterns.
+eda.ipynb
