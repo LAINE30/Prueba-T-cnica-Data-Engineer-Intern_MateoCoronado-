@@ -217,3 +217,8 @@ __pycache__/
 ## notebooks
 simple-eda-sales-and-customer-patterns.
 eda.ipynb
+README copy.md
+
+##pipeline
+pipeline/
+pipeline_runner.py

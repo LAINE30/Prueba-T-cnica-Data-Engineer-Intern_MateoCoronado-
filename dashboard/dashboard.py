@@ -19,7 +19,7 @@ from urllib.parse import quote_plus
 # =============================================================
 st.set_page_config(
     page_title="Olist · Data Dashboard",
-    page_icon="📦",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -29,80 +29,191 @@ st.set_page_config(
 # =============================================================
 st.markdown("""
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* --------- FONDO GENERAL --------- */
+
+.stApp {
+    background: #4c4f80;
+}
 
 html, body, [class*="css"] {
     font-family: 'DM Sans', sans-serif;
+    color: #334155;
 }
+
+
+/* --------- TITULOS --------- */
 
 h1, h2, h3 {
     font-family: 'Syne', sans-serif !important;
+    color: #0F172A !important;
     letter-spacing: -0.02em;
 }
 
-/* Sidebar */
+
+/* --------- SIDEBAR --------- */
+
 [data-testid="stSidebar"] {
-    background: #0f0f0f;
-    border-right: 1px solid #1e1e1e;
+    background: linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 100%);
+    border-right: 1px solid #BFDBFE;
 }
+
 [data-testid="stSidebar"] * {
-    color: #e0e0e0 !important;
+    color: #1E293B !important;
 }
 
-/* Métricas */
-[data-testid="metric-container"] {
-    background: #f8f7f4;
-    border: 1px solid #ebebeb;
-    border-radius: 12px;
-    padding: 16px 20px;
-}
-[data-testid="stMetricValue"] {
-    font-family: 'Syne', sans-serif !important;
-    font-size: 2rem !important;
-    font-weight: 700 !important;
-    color: #0f0f0f !important;
-}
-[data-testid="stMetricLabel"] {
-    font-size: 0.75rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #888 !important;
-}
 
-/* Header strip */
+/* --------- HEADER DASHBOARD --------- */
+
 .dash-header {
-    background: #0f0f0f;
-    color: #fff;
-    padding: 28px 32px 24px;
-    border-radius: 16px;
-    margin-bottom: 32px;
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    padding: 32px;
+    border-radius: 20px;
+    border: 1px solid #BFDBFE;
+    margin-bottom: 35px;
 }
+
 .dash-header h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 800;
-    color: #fff !important;
-    margin: 0 0 4px 0;
-}
-.dash-header p {
-    color: #888;
-    font-size: 0.9rem;
     margin: 0;
+    color: #1E3A8A !important;
 }
 
-/* Section labels */
-.section-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+.dash-header p {
+    margin-top: 10px;
+    color: #475569;
+}
+
+
+/* --------- METRICAS --------- */
+
+[data-testid="metric-container"] {
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    border: 1px solid #DBEAFE;
+
+    box-shadow: 
+        0 10px 25px rgba(37, 99, 235, 0.08),
+        0 2px 6px rgba(37, 99, 235, 0.05);
+
+    transition: all 0.25s ease;
+}
+
+[data-testid="metric-container"]:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 
+        0 16px 35px rgba(37, 99, 235, 0.12),
+        0 4px 10px rgba(37, 99, 235, 0.08);
+}
+
+
+[data-testid="stMetricValue"] {
+
+    font-family: 'Syne', sans-serif !important;
+
+    color: #2563EB !important;
+
+    font-size: 2rem;
+}
+
+[data-testid="stMetricLabel"] {
+
+    color: #64748B !important;
+
     text-transform: uppercase;
-    color: #aaa;
-    margin-bottom: 4px;
+
+    letter-spacing: 0.05em;
+
+    font-size: 0.8rem;
 }
 
-/* Divider */
-hr { border: none; border-top: 1px solid #ebebeb; margin: 32px 0; }
+
+/* --------- DIVIDER --------- */
+
+hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    margin: 35px 0;
+}
+
+
+/* --------- BOTONES --------- */
+
+.stButton>button {
+
+    background: linear-gradient(135deg, #2563EB, #3B82F6);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 10px 18px;
+
+    font-weight: 500;
+
+    transition: all 0.25s ease;
+
+}
+
+.stButton>button:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
+
+}
+
+
+/* --------- TABS --------- */
+
+button[data-baseweb="tab"] {
+
+    font-weight: 500;
+
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+
+    color: #2563EB;
+
+    border-bottom: 3px solid #2563EB;
+
+}
+
+
+/* --------- DATAFRAME --------- */
+
+[data-testid="stDataFrame"] {
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    border: 1px solid #E2E8F0;
+
+}
+
+
+/* --------- GRAFICOS --------- */
+
+canvas {
+
+    border-radius: 10px;
+
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -112,7 +223,7 @@ hr { border: none; border-top: 1px solid #ebebeb; margin: 32px 0; }
 @st.cache_resource
 def get_engine():
     cfg = {
-        "host":     os.getenv("PGHOST",     "localhost"),
+        "host":     os.getenv("PGHOST",     "192.168.1.26"),
         "port":     os.getenv("PGPORT",     "5432"),
         "database": os.getenv("PGDATABASE", "olist_db"),
         "user":     os.getenv("PGUSER",     "postgres"),
@@ -134,14 +245,14 @@ try:
     db_ok = True
 except Exception as e:
     db_ok = False
-    st.error(f"❌ No se pudo conectar a PostgreSQL: {e}")
+    st.error(f"No se pudo conectar a PostgreSQL: {e}")
     st.stop()
 
 # =============================================================
 #  SIDEBAR — FILTROS GLOBALES
 # =============================================================
 with st.sidebar:
-    st.markdown("## 📦 Olist Dashboard")
+    st.markdown("## Olist Dashboard")
     st.markdown("---")
 
     # Rango de fechas
@@ -177,7 +288,7 @@ base_filter  = f"WHERE {year_filter} {state_clause} {status_clause}"
 # =============================================================
 st.markdown("""
 <div class="dash-header">
-  <h1>📦 Olist E-Commerce</h1>
+  <h1>DashBoard</h1>
   <p>Brazilian marketplace · 2016–2018 · Data Engineer Intern — Fase 4</p>
 </div>
 """, unsafe_allow_html=True)
@@ -217,7 +328,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # =============================================================
 #  Q1 — VOLUMEN POR MES + ESTACIONALIDAD
 # =============================================================
-st.markdown('<p class="section-label">Q1 — Volumen y estacionalidad</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-label">Q1 — ¿Cuál es el volumen total de transacciones/registros por mes? ¿Hay estacionalidad?</p>', unsafe_allow_html=True)
 st.subheader("Pedidos por mes")
 
 q1_sql = f"""
@@ -283,14 +394,14 @@ if not q1.empty:
 
     # Insight estacionalidad
     peak = q1.loc[q1["total_orders"].idxmax()]
-    st.caption(f"📈 Pico de ventas: **{peak['order_yearmonth']}** con **{int(peak['total_orders']):,}** pedidos")
+    st.caption(f"Pico de ventas: **{peak['order_yearmonth']}** con **{int(peak['total_orders']):,}** pedidos")
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # =============================================================
 #  Q2 — TOP 10 CATEGORÍAS POR REVENUE
 # =============================================================
-st.markdown('<p class="section-label">Q2 — Top categorías</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-label">Q2 — ¿Cuáles son los 10 clientes, productos o categorías con mayor valor generado?</p>', unsafe_allow_html=True)
 st.subheader("Top 10 categorías por revenue")
 
 q2_sql = f"""
@@ -357,7 +468,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # =============================================================
 #  Q3 — TIEMPO DE ENTREGA
 # =============================================================
-st.markdown('<p class="section-label">Q3 — Tiempos de entrega</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-label">Q3 — ¿Cuál es el tiempo promedio entre eventos clave del flujo?</p>', unsafe_allow_html=True)
 st.subheader("Tiempo promedio compra → entrega por estado")
 
 q3_sql = f"""
@@ -434,7 +545,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # =============================================================
 #  Q4 — INCIDENCIAS Y RESULTADOS NEGATIVOS
 # =============================================================
-st.markdown('<p class="section-label">Q4 — Incidencias</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-label">Q4 — ¿Qué porcentaje de registros tiene algún tipo de incidencia o resultado negativo?</p>', unsafe_allow_html=True)
 st.subheader("Porcentaje de pedidos con incidencias")
 
 q4_sql = f"""
@@ -614,4 +725,4 @@ if not q5.empty:
 #  FOOTER
 # =============================================================
 st.markdown("<hr>", unsafe_allow_html=True)
-st.caption("Olist Brazilian E-Commerce Dataset · Kaggle · Prueba Técnica Data Engineer Intern")
+st.caption("Olist Brazilian E-Commerce Dataset · Prueba Técnica Data Engineer Intern")

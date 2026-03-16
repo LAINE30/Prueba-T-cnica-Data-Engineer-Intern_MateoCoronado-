@@ -1,7 +1,7 @@
-# 📦 Olist E-Commerce — Data Pipeline
+# Olist E-Commerce — Data Pipeline
 
-**Prueba Técnica · Data Engineer Intern · Invers AI**  
-Dataset: [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) · Kaggle
+**Prueba Técnica · Mateo Coronado**  
+Dataset: [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 ---
 
@@ -24,8 +24,6 @@ Dataset: [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/br
 
 ## Descripción del proyecto
 
-Pipeline de datos completo sobre el dataset de e-commerce de Olist (~100k órdenes reales anonimizadas de Brasil, 2016–2018). El proyecto cubre exploración, limpieza, modelado relacional, visualización interactiva y orquestación automática con n8n.
-
 **Objetivo:** demostrar la capacidad de trabajar con datos reales y sucios, diseñar estructuras de bases de datos, construir pipelines de transformación y comunicar hallazgos de negocio.
 
 ---
@@ -36,12 +34,12 @@ Pipeline de datos completo sobre el dataset de e-commerce de Olist (~100k órden
 olist-data-pipeline/
 │
 ├── data/
-│   ├── raw/                          # CSVs originales sin modificar (9 archivos)
-│   └── clean/                        # CSVs procesados (output de Fase 2)
+│   ├── raw/                          # CSVs originales 
+│   └── clean/                        # CSVs procesados 
 │
 ├── notebooks/
 │   ├── 01_exploration.ipynb          # Fase 1: diagnóstico de calidad de datos
-│   └── 02_cleaning.ipynb             # Fase 2: transformaciones justificadas
+│   └── 02_cleaning.ipynb             # Fase 2: transformaciones
 │
 ├── sql/
 │   ├── schema.sql                    # DDL completo del star schema
@@ -51,11 +49,11 @@ olist-data-pipeline/
 │   └── load_to_postgres.py           # Carga de CSVs limpios a PostgreSQL
 │
 ├── dashboard/
-│   └── dashboard.py                  # Dashboard Streamlit (Fase 4)
+│   └── dashboard.py                  # Dashboard Streamlit
 │
 ├── pipeline/
 │   ├── pipeline_runner.py            # Orquestador Python invocado por n8n
-│   └── last_report.html              # Último reporte generado (auto)
+│   └── last_report.html              # Último reporte generado (automático)
 │
 ├── docker-compose.yml                # Levanta n8n en Docker
 ├── olist_n8n_workflow.json           # Workflow n8n importable
@@ -63,29 +61,13 @@ olist-data-pipeline/
 └── README.md
 ```
 
----
-
-## Stack tecnológico
-
-| Capa | Tecnología |
-|---|---|
-| Lenguaje | Python 3.10+ |
-| Exploración y limpieza | pandas, numpy |
-| Base de datos | PostgreSQL 18 |
-| ORM / conexión | SQLAlchemy + psycopg2 |
-| Dashboard | Streamlit + Plotly |
-| Orquestación | n8n (Docker) |
-| Entorno | venv |
-
----
 
 ## Instalación y setup
 
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/olist-data-pipeline.git
-cd olist-data-pipeline
+git clone https://github.com/LAINE30/Prueba-T-cnica-Data-Engineer-Intern_MateoCoronado-.git
 ```
 
 ### 2. Crear entorno virtual e instalar dependencias
@@ -93,11 +75,7 @@ cd olist-data-pipeline
 ```bash
 python -m venv venv
 
-# Windows
-venv\Scripts\activate
-
-# Linux / Mac
-source venv/bin/activate
+.\venv\Scripts\Activate.ps1
 
 pip install -r requirements.txt
 ```
@@ -112,7 +90,7 @@ El servidor PostgreSQL puede estar en otra máquina de la misma red. Editar las 
 
 ```python
 DB_CONFIG = {
-    "host":     "192.168.x.x",   # IP del servidor
+    "host":     "localhost",   #Si el servidor esta en otra PC, IP del servidor: 192.168.1.26
     "port":     "5432",
     "database": "olist_db",
     "user":     "postgres",
@@ -139,17 +117,16 @@ export PGPASSWORD=tu_password
 
 Exploración inicial de las 8 tablas antes de cualquier transformación. Principales hallazgos:
 
-| Tabla | Problema encontrado | Severidad |
+| Tabla | Problema encontrado |
 |---|---|---|
-| `geolocation` | 57 coordenadas fuera del territorio de Brasil | 🟠 Alta |
-| `geolocation` | 981k filas duplicadas por ZIP code (98.1%) | 🟠 Alta |
-| `orders` | Nulos esperados en fechas de entrega (pedidos no entregados) | 🟡 Media |
-| `products` | 610 productos sin categoría (1.85%) | 🟡 Media |
-| `payments` | 9 registros con `payment_value == 0` | 🟡 Media |
-| `reviews` | 551 duplicados por `order_id` | 🟡 Media |
-| `customers` / `sellers` | Inconsistencias de encoding en nombres de ciudades | 🟡 Media |
+| `geolocation` | 57 coordenadas fuera del territorio de Brasil |
+| `geolocation` | 981k filas duplicadas por ZIP code (98.1%) |
+| `orders` | Nulos esperados en fechas de entrega (pedidos no entregados) |
+| `products` | 610 productos sin categoría (1.85%) |
+| `payments` | 9 registros con `payment_value == 0` |
+| `reviews` | 551 duplicados por `order_id` |
+| `customers` / `sellers` | Inconsistencias de encoding en nombres de ciudades |
 
-**Integridad referencial:** ✅ 0 registros huérfanos en todos los joins críticos.
 
 ---
 
@@ -201,13 +178,15 @@ Cada decisión está justificada en el notebook. Resumen:
               ↑
          dim_products
 ```
-
-**Justificación del modelo estrella:** permite queries analíticas eficientes con joins simples desde la tabla de hechos hacia las dimensiones, sin necesidad de múltiples joins encadenados.
+![alt text](HRhd2Y0.png)
 
 #### Ejecutar la carga
 
 ```bash
 # 1. Correr notebooks 01 y 02 para generar data/clean/
+01_exploration.ipynb 
+02_cleaning.ipynb
+
 # 2. Cargar a PostgreSQL
 python scripts/load_to_postgres.py
 ```
@@ -237,9 +216,7 @@ Total                   569,561
 streamlit run dashboard/dashboard.py
 ```
 
-El dashboard se abre en `http://localhost:8501` y se conecta directamente a PostgreSQL.
-
-**Filtros globales (sidebar):** año, estado del cliente, estado del pedido. Todos los gráficos reaccionan dinámicamente.
+El dashboard se abre en `http://localhost:8501` o `http://192.168.1.26:8501`,dependiendo de la configuración  y se conecta directamente a PostgreSQL.
 
 **Visualizaciones incluidas:**
 
@@ -254,57 +231,6 @@ El dashboard se abre en `http://localhost:8501` y se conecta directamente a Post
 
 ---
 
-### Fase 5 — Pipeline Orquestado con n8n
-
-**Archivos:** `docker-compose.yml`, `olist_n8n_workflow.json`, `pipeline/pipeline_runner.py`
-
-El pipeline completo se puede ejecutar con un solo trigger (manual o programado).
-
-#### Levantar n8n
-
-```bash
-docker-compose up -d
-# Abrir http://localhost:5678
-```
-
-#### Instalar Python en el contenedor n8n
-
-```bash
-docker exec -it olist_n8n sh
-apk add python3 py3-pip
-pip3 install pandas sqlalchemy psycopg2-binary numpy
-exit
-```
-
-#### Importar el workflow
-
-En n8n → *Workflows* → *Import from file* → `olist_n8n_workflow.json`
-
-#### Flujo del pipeline
-
-```
-⏰ Schedule (lunes 8am)  ─┐
-                           ├──→  🧹 Limpieza  ──→  📥 Carga BD  ──→  📊 Reporte  ──→  📧 Email
-🔘 Webhook manual  ────────┘         ↓                  ↓
-                                ❌ Error  ──────────────────────────────────────────→  📧 Email error
-```
-
-Cada paso valida su salida JSON antes de continuar. Si un paso falla, el pipeline envía un email de error con el traceback y se detiene.
-
-#### Ejecutar manualmente desde terminal
-
-```bash
-# Todo el pipeline
-python pipeline/pipeline_runner.py --step all
-
-# Pasos individuales
-python pipeline/pipeline_runner.py --step clean
-python pipeline/pipeline_runner.py --step load
-python pipeline/pipeline_runner.py --step report
-
-# Trigger via webhook (con n8n corriendo)
-curl -X POST http://localhost:5678/webhook/olist-manual-run
-```
 
 ---
 
