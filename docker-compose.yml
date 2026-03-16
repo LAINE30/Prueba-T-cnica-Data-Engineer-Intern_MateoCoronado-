@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: olist_n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # URL base donde corre n8n
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      # Timezone
+      - GENERIC_TIMEZONE=America/Bogota
+      - TZ=America/Bogota
+      # Desactivar telemetría
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+    volumes:
+      # Datos persistentes de n8n (workflows, credenciales)
+      - n8n_data:/home/node/.n8n
+      # Montar el proyecto completo para que n8n pueda ejecutar los scripts
+      - .:/home/node/project
+    # Asegura que el contenedor puede ejecutar Python del host via exec
+    # Los scripts se ejecutan como comandos dentro del contenedor
+
+volumes:
+  n8n_data:
