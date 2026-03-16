@@ -222,3 +222,6 @@ README copy.md
 ##pipeline
 pipeline/
 pipeline_runner.py
+
+##docker
+docker-compose.yml

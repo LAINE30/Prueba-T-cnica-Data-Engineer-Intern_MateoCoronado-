@@ -178,7 +178,6 @@ Cada decisión está justificada en el notebook. Resumen:
               ↑
          dim_products
 ```
-![alt text](HRhd2Y0.png)
 
 #### Ejecutar la carga
 
